@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
+var request = require('request');
 
 /*
  * You will need to reuse the same paths many times over in the course of this sprint.
@@ -60,6 +61,7 @@ exports.addUrlToList = function(url, callback) {
   });
 };
 
+//Check if URL is archived aka if file exists in archives/sites folder
 exports.isUrlArchived = function(url, callback) {
   var site = path.join(exports.paths.archivedSites, url);
   fs.exists(site, function(found) {
@@ -67,4 +69,5 @@ exports.isUrlArchived = function(url, callback) {
   });
 };
 
+//Used in htmlfetcher, downloads all pending urls in the list
 exports.downloadUrls = function(urls) {};
