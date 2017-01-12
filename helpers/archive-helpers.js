@@ -28,7 +28,7 @@ exports.initialize = function(pathsObj) {
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-// Read file of the lists of sites
+// Read file of the lists of sites, urls is an array
 exports.readListOfUrls = function(callback) {
   var urls = [];
   fs.readFile(exports.paths.list, 'utf8', function(err, data) {
@@ -70,4 +70,16 @@ exports.isUrlArchived = function(url, callback) {
 };
 
 //Used in htmlfetcher, downloads all pending urls in the list
-exports.downloadUrls = function(urls) {};
+exports.downloadUrls = function(urls) {
+  // for each websiteURL in array urls
+  _.each(urls, function(url) {
+    if (!url) {
+      return;
+    } else {
+      request(`http://${url}`).pipe(fs.createWriteStream(`${exports.paths.archivedSites}/${url}`));
+    }
+  });
+  //     send GET request using request() to websiteURL
+  //       use fs.writeFile (utf8) to write body to
+  //       exports.paths.archivedSites + /websiteURL
+};

@@ -11,6 +11,8 @@ exports.headers = {
   'Content-Type': 'text/html'
 };
 
+// Use this for worker to get sites
+//
 // exports.makeRequest = function(url, callback) {
 //   request(url, function(err, resp, body) {
 //     if (err) {
@@ -23,8 +25,7 @@ exports.headers = {
 
 exports.redirect = function(response, location, statusCode) {
   statusCode = statusCode || 302;
-  response.writeHead(statusCode, response.setHeader('Location', location));
-  //response.setHeader("Location", location);
+  response.writeHead(statusCode, Object.assign({Location: location}, exports.headers));
   response.end();
 };
 
@@ -33,17 +34,20 @@ exports.serveAssets = function(res, asset, callback) {
   // css, or anything that doesn't change often.)
   fs.readFile(archive.paths.siteAssets + asset, function(err, data) {
     if (err) {
+      // Looks in archivedSites if server can't find asset in siteAssets
       fs.readFile(archive.paths.archivedSites + asset, function(err, data) {
         if (err) {
+          // Returns 404 if client was wrong
           console.log(err);
           res.writeHead(404, exports.headers);
           res.end();
         } else {
+          // Serves found archived site
           res.writeHead(200, exports.headers);
           res.end(data);
         }
       });
-    // If index.html or loading.html or styles.css
+    // Serves index.html or loading.html or styles.css
     } else {
       res.writeHead(200, exports.headers);
       res.end(data);

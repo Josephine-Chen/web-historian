@@ -9,18 +9,16 @@ exports.handleRequest = function(req, res) {
     // Parse url and set url path
     var parsed = url.parse(req.url).pathname;
     var urlPath = parsed;
-
+    //console.log('urlPath is', urlPath);
+    // Serves index.html at root
     if (parsed === '/') {
       urlPath = '/index.html';
     }
-
+    //urlPath includes / at the front
+    // Serve static assets
     httpHelpers.serveAssets(res, urlPath, function() {
-
-    // Use serveAssets to grab sites
-    // If it found the site on list and not yet archived
-    // Redirect to loading
-    // Else say it's not found
-
+    //Check this later
+    //Check if url in list, if it is, redirect loading, else 404
     });
   }
 
