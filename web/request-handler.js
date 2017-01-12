@@ -28,19 +28,25 @@ exports.handleRequest = function(req, res) {
     req.on('data', function(chunk) {
       body += chunk;
     });
+    //body is currently url=www.something.com
     req.on('end', function() {
+      //Get just the url
+      body = body.split('=')[1];
       archive.isUrlInList(body, function(found) {
         if (found) {
           archive.isUrlArchived(body, function(found) {
             if (!found) {
               // serve loading.html
+              httpHelpers.redirect(res, 'loading.html');
             } else {
               // serve site
+              httpHelpers.redirect(res, body);
             }
           });
         } else {
           archive.addUrlToList(body, function() {
             // serve loading.html
+            httpHelpers.redirect(res, 'loading.html');
           });
         }
       });
