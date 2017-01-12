@@ -1,22 +1,21 @@
 var archive = require('../helpers/archive-helpers');
-archive.readListofUrls(function(urls) {
-  var array = [];
-  _.each(urls, function(url) {
-    archive.isUrlArchived(url, function(found) {
-      if (!found) {
-        array.push(url);
-      }
-    });
-  });
-  archive.downloadURLs(array);
-});
+var _ = require('underscore');
 
-// TODO: save websites to archive
-//
-// Use the code in `archive-helpers.js` to actually download the urls
-// that are waiting.
-//
+archive.readListOfUrls(archive.downloadUrls);
 
+// archive.readListOfUrls(function(urls) {
+//   var array = [];
+//   _.each(urls, function(url) {
+//     archive.isUrlArchived(url, function(found) {
+//       if (!found) {
+//         console.log('pushing to array');
+//         array.push(url);
+//       }
+//     });
+//   });
+
+//   setTimeout(function() { archive.downloadUrls(array); }, 500);
+// });
 
 // Some variable (websitesToArchive)? to store array of websites to archive
 //
