@@ -28,14 +28,43 @@ exports.initialize = function(pathsObj) {
 // modularize your code. Keep it clean!
 
 // Read file of the lists of sites
-exports.readListOfUrls = function(callback) {};
+exports.readListOfUrls = function(callback) {
+  var urls = [];
+  fs.readFile(exports.paths.list, 'utf8', function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(data);
+      urls = data.toString().split('\n');
+      callback(urls);
+    }
+  });
+};
 
 // Check if after reading list, the url is found or not
-exports.isUrlInList = function(url, callback) {};
+exports.isUrlInList = function(url, callback) {
+  exports.readListOfUrls(function(urls) {
+    var found = _.contains(urls, url);
+    callback(found);
+  });
+};
 
 // Append url to list of sites file
-exports.addUrlToList = function(url, callback) {};
+exports.addUrlToList = function(url, callback) {
+  fs.appendFile(exports.paths.list, url + '\n', 'utf8', function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      callback(data);
+    }
+  });
+};
 
-exports.isUrlArchived = function(url, callback) {};
+exports.isUrlArchived = function(url, callback) {
+  var site = path.join(exports.paths.archivedSites, url);
+  fs.exists(site, function(found) {
+    callback(found);
+  });
+};
 
 exports.downloadUrls = function(urls) {};

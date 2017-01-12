@@ -13,7 +13,7 @@ exports.headers = {
 exports.serveAssets = function(res, asset, callback) {
   // (Static files are things like html (yours or archived from others...),
   // css, or anything that doesn't change often.)
-  var indexPath = path.join(__dirname, '/public/index.html');
+  // var indexPath = path.join(__dirname, '/public/index.html');
   fs.readFile(archive.paths.siteAssets + asset, function(err, data) {
     if (err) {
       fs.readFile(archive.paths.archivedSites + asset, function(err, data) {
@@ -26,7 +26,7 @@ exports.serveAssets = function(res, asset, callback) {
           res.end(data);
         }
       });
-      // If index.html or loading.html or styles.css
+    // If index.html or loading.html or styles.css
     } else {
       res.writeHead(200, exports.headers);
       res.end(data);

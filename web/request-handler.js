@@ -24,7 +24,27 @@ exports.handleRequest = function(req, res) {
 
   // POST
   if (req.method === 'POST') {
-
+    var body = '';
+    req.on('data', function(chunk) {
+      body += chunk;
+    });
+    req.on('end', function() {
+      archive.isUrlInList(body, function(found) {
+        if (found) {
+          archive.isUrlArchived(body, function(found) {
+            if (!found) {
+              // serve loading.html
+            } else {
+              // serve site
+            }
+          });
+        } else {
+          archive.addUrlToList(body, function() {
+            // serve loading.html
+          });
+        }
+      });
+    });
   }
   // res.end(archive.paths.list);
 };
